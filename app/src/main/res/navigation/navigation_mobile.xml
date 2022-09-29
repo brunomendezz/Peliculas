@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:name="androidx.navigation.fragment.NavHostFragment"
+    app:defaultNavHost="true"
+    android:id="@+id/mobile_navigation.xml"
+    tools:ignore="InvalidNavigation"
+    app:startDestination="@id/loMasPopularFragment">
+    <fragment
+        android:id="@+id/loMasPopularFragment"
+        android:name="ar.edu.unlam.apppeliculas.ui.view.fragment.LoMasPopularFragment"
+        android:label="LoMasPopularFragment" >
+        <action
+            android:id="@+id/action_loMasPopularFragment_to_detailMovieFragment"
+            app:destination="@id/detailMovieFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/tendenciasFragment"
+        android:name="ar.edu.unlam.apppeliculas.ui.view.fragment.TendenciasFragment"
+        android:label="TendenciasFragment" >
+        <action
+            android:id="@+id/action_tendenciasFragment_to_detailMovieFragment"
+            app:destination="@id/detailMovieFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loMasValoradoFragment"
+        android:name="ar.edu.unlam.apppeliculas.ui.view.fragment.LoMasValorado"
+        android:label="fragment_lo_mas_valorado"
+         >
+        <action
+            android:id="@+id/action_loMasValoradoFragment_to_detailMovieFragment"
+            app:destination="@id/detailMovieFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailMovieFragment"
+        android:name="ar.edu.unlam.apppeliculas.ui.view.fragment.DetailMovieFragment"
+        android:label="fragment_detail_movie"
+        tools:layout="@layout/fragment_detail_movie" />
+
+</navigation>
