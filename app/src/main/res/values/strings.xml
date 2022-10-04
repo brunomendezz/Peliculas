@@ -10,4 +10,11 @@
     <string name="lo_m_s_valorado">Lo más valorado:</string>
     <string name="duraci_n">Duración:</string>
     <string name="lenguaje_original">Lenguaje original:</string>
+    <string name="peliculas">Peliculas</string>
+    <string name="Series">Series</string>
+    <string name="programas_de_tv">Programas de TV</string>
+    <string name="boton_menu_cerrar">cerrar</string>
+    <string name="boton_menu_abrir">abrir</string>
+    <string name="action_settings">holis</string>
+    <string name="buscar">Buscar</string>
 </resources>

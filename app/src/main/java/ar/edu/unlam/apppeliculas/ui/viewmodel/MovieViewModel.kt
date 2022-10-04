@@ -47,6 +47,7 @@ import kotlinx.coroutines.launch
             viewModelScope.launch {
                 lastVisible.collect{
                     notifyLastVisible(it,page)
+                    page++
            
                 }
 
