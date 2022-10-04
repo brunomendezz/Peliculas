@@ -1,7 +1,7 @@
-package ar.edu.unlam.apppeliculas.domain
+package ar.edu.unlam.apppeliculas.domain.usecase
 
 import ar.edu.unlam.apppeliculas.data.MovieRepository
-import ar.edu.unlam.apppeliculas.data.model.MovieModel
+import ar.edu.unlam.apppeliculas.domain.model.MovieModel
 
 class GetMoviesTopRated {
     private val repository = MovieRepository()

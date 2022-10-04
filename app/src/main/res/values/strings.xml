@@ -5,4 +5,9 @@
     <string name="tab_text_3">Tendencia</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="lo_m_s_popular">Lo más popular:</string>
+    <string name="en_tendencia">En tendencia:</string>
+    <string name="lo_m_s_valorado">Lo más valorado:</string>
+    <string name="duraci_n">Duración:</string>
+    <string name="lenguaje_original">Lenguaje original:</string>
 </resources>

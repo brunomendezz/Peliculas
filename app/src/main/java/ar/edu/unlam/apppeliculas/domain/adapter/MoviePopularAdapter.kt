@@ -1,12 +1,13 @@
-package ar.edu.unlam.apppeliculas.data.adapter
+package ar.edu.unlam.apppeliculas.domain.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import ar.edu.unlam.apppeliculas.R
-import ar.edu.unlam.apppeliculas.data.model.MovieModel
+import ar.edu.unlam.apppeliculas.domain.model.MovieModel
 
-class MovieAdapter(private val movieList: List<MovieModel>, private val onClickListener:(MovieModel)->Unit):
+class MoviePopularAdapter(private val movieList: List<MovieModel>, private val onClickListener:(MovieModel)->Unit):
     RecyclerView.Adapter<MovieViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {

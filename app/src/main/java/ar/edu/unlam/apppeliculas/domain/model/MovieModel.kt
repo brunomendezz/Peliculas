@@ -1,4 +1,4 @@
-package ar.edu.unlam.apppeliculas.data.model
+package ar.edu.unlam.apppeliculas.domain.model
 
 import com.google.gson.annotations.SerializedName
 

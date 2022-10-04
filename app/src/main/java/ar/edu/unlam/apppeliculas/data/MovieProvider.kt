@@ -1,4 +1,6 @@
-package ar.edu.unlam.apppeliculas.data.model
+package ar.edu.unlam.apppeliculas.data
+
+import ar.edu.unlam.apppeliculas.domain.model.MovieModel
 
 class MovieProvider {
     companion object{

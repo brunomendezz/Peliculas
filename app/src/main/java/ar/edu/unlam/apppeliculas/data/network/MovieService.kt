@@ -1,7 +1,7 @@
 package ar.edu.unlam.apppeliculas.data.network
 
 import ar.edu.unlam.apppeliculas.core.RetrofitHelper
-import ar.edu.unlam.apppeliculas.data.model.MovieModel
+import ar.edu.unlam.apppeliculas.domain.model.MovieModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -10,7 +10,7 @@ class MovieService {
 
     suspend fun getMovies():List<MovieModel>{
         return withContext(Dispatchers.IO){
-            val response = retrofit.create(MovieApiClient::class.java).getAllMovies()
+            val response = retrofit.create(MovieApiClient::class.java).getAllMovies("")
             response.body()?.results ?: emptyList()
         }
 
@@ -29,5 +29,12 @@ class MovieService {
             response.body()?.results ?: emptyList()
         }
 
+    }
+
+    suspend fun getMoreMoviesPopular(page:Int): List<MovieModel> {
+        return withContext(Dispatchers.IO){
+            val response = retrofit.create(MovieApiClient::class.java).getAllMovies(page.toString())
+            response.body()?.results ?: emptyList()
+        }
     }
 }

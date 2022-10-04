@@ -1,59 +1,68 @@
 package ar.edu.unlam.apppeliculas.ui.viewmodel
 
+import android.graphics.Movie
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ar.edu.unlam.apppeliculas.data.model.MovieModel
-import ar.edu.unlam.apppeliculas.domain.GetMovies
-import ar.edu.unlam.apppeliculas.domain.GetMoviesTopRated
-import ar.edu.unlam.apppeliculas.domain.GetMoviesTrending
+import ar.edu.unlam.apppeliculas.domain.model.MovieModel
+import ar.edu.unlam.apppeliculas.domain.usecase.GetMoreMoviesPopular
+import ar.edu.unlam.apppeliculas.domain.usecase.GetMovies
+import ar.edu.unlam.apppeliculas.domain.usecase.GetMoviesTopRated
+import ar.edu.unlam.apppeliculas.domain.usecase.GetMoviesTrending
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-    class MovieViewModel : ViewModel() {
-        var isLoading = MutableLiveData<Boolean>()
-        var isLoadingTrending = MutableLiveData<Boolean>()
-        var isLoadingTopRated = MutableLiveData<Boolean>()
-        var movieADetail = MutableLiveData<MovieModel>()
+    class MovieViewModel() : ViewModel() {
+        private  var _isLoading = MutableLiveData<Boolean>()
+         var seMandoLaLlamada = MutableLiveData<Boolean>()
 
-        var getMoviesUseCase = GetMovies()
-        var getMoviesTrending = GetMoviesTrending()
-        var getMoviesTopRated = GetMoviesTopRated()
+        private var getMoviesUseCase = GetMovies()
+        private var getMoreMoviesPopular = GetMoreMoviesPopular()
+        private var getMoviesTrending = GetMoviesTrending()
+        private var getMoviesTopRated = GetMoviesTopRated()
+
+        var moviesPopular = MutableLiveData<List<MovieModel>?>()
+
+        val isLoading : LiveData<Boolean> get() = _isLoading
+        val lastVisible = MutableStateFlow(0)
 
 
         fun onCreate() {
             viewModelScope.launch {
-                isLoading.postValue(true)
+                _isLoading.postValue(true)
                 val result = getMoviesUseCase()
-                if (!result.isNullOrEmpty()) {
-                    isLoading.postValue(false)
+                moviesPopular.postValue(result)
+
+                val result2 = getMoviesTrending()
+                val result3 = getMoviesTopRated()
+                if (!result.isNullOrEmpty() && !result2.isNullOrEmpty() && !result3.isNullOrEmpty()) {
+                    _isLoading.postValue(false)
                 }
             }
         }
 
-        fun onCreateMoviesTrending() {
+        init {
+            var page = 2
             viewModelScope.launch {
-                isLoadingTrending.postValue(true)
-                val result = getMoviesTrending()
-                if (!result.isNullOrEmpty()) {
-                    isLoadingTrending.postValue(false)
+                lastVisible.collect{
+                    notifyLastVisible(it,page)
+           
                 }
+
             }
+
         }
 
-        fun onCreateMoviesTopRated() {
+        suspend fun notifyLastVisible(position: Int, page: Int) {
             viewModelScope.launch {
-                isLoadingTopRated.postValue(true)
-                val result = getMoviesTopRated()
-                if (!result.isNullOrEmpty()) {
-                    isLoadingTopRated.postValue(false)
-                }
-            }
-        }
+                seMandoLaLlamada.postValue(false)
+              var result= getMoreMoviesPopular.invoke(position, page)
+              if (!result.isNullOrEmpty()){
+                  seMandoLaLlamada.postValue(true)
+              }
 
-        fun seTocoEstaMovie(movie: MovieModel) {
-            viewModelScope.launch {
-                movieADetail.postValue(movie)
             }
-
         }
     }
+

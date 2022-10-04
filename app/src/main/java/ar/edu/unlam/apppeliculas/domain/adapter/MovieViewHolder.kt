@@ -1,8 +1,8 @@
-package ar.edu.unlam.apppeliculas.data.adapter
+package ar.edu.unlam.apppeliculas.domain.adapter
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import ar.edu.unlam.apppeliculas.data.model.MovieModel
+import ar.edu.unlam.apppeliculas.domain.model.MovieModel
 import ar.edu.unlam.apppeliculas.databinding.ItemMovieBinding
 import com.squareup.picasso.Picasso
 
