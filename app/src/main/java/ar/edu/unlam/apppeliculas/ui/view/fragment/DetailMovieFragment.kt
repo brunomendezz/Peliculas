@@ -27,7 +27,7 @@ class DetailMovieFragment : Fragment() {
         } else {
             binding.adult.text="ATP"
         }
-        binding.lenguaje.text = "Lenguaje original: ${movie.original_language}"
+        binding.lenguaje.text = "Lenguaje: ${movie.original_language}"
         binding.titulo.text = movie.title
         Picasso
             .get()
@@ -37,9 +37,6 @@ class DetailMovieFragment : Fragment() {
         binding.ratingBar.rating= movie.vote_average.toFloat()
 
 
-        binding.toggleButton.setOnClickListener {
-            it.isVisible = false
-        }
         return binding.root
     }
 

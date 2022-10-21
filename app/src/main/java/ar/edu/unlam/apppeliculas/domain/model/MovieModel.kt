@@ -2,7 +2,8 @@ package ar.edu.unlam.apppeliculas.domain.model
 
 import com.google.gson.annotations.SerializedName
 
-data class MovieModel(@SerializedName("poster_path") var poster_path: String, @SerializedName("adult") var adult: Boolean,
+data class MovieModel(@SerializedName("poster_path") var poster_path: String,
+                      @SerializedName("adult") var adult: Boolean,
                       @SerializedName("overview")var overview: String,
                       @SerializedName("release_date")var release_date: String,
                       @SerializedName("genre_ids") var genre_ids: List<Int>,

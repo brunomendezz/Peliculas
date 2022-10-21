@@ -10,14 +10,14 @@ class MovieService {
 
     suspend fun getMovies():List<MovieModel>{
         return withContext(Dispatchers.IO){
-            val response = retrofit.create(MovieApiClient::class.java).getAllMovies("")
+            val response = retrofit.create(MovieApiClient::class.java).getAllMovies(1)
             response.body()?.results ?: emptyList()
         }
 
     }
     suspend fun getMoviesTrending():List<MovieModel>{
         return withContext(Dispatchers.IO){
-            val response = retrofit.create(MovieApiClient::class.java).getMoviesTrending()
+            val response = retrofit.create(MovieApiClient::class.java).getMoviesTrending(1)
             response.body()?.results ?: emptyList()
         }
 
@@ -25,7 +25,7 @@ class MovieService {
 
     suspend fun getMoviesTopRated():List<MovieModel>{
         return withContext(Dispatchers.IO){
-            val response = retrofit.create(MovieApiClient::class.java).getAllMoviesTopRated()
+            val response = retrofit.create(MovieApiClient::class.java).getAllMoviesTopRated(1)
             response.body()?.results ?: emptyList()
         }
 
@@ -33,7 +33,19 @@ class MovieService {
 
     suspend fun getMoreMoviesPopular(page:Int): List<MovieModel> {
         return withContext(Dispatchers.IO){
-            val response = retrofit.create(MovieApiClient::class.java).getAllMovies(page.toString())
+            val response = retrofit.create(MovieApiClient::class.java).getAllMovies(page)
+            response.body()?.results ?: emptyList()
+        }
+    }
+    suspend fun getMoreMoviesTrending(page:Int): List<MovieModel> {
+        return withContext(Dispatchers.IO){
+            val response = retrofit.create(MovieApiClient::class.java).getMoviesTrending(page)
+            response.body()?.results ?: emptyList()
+        }
+    }
+    suspend fun getMoreMoviesTopRated(page:Int): List<MovieModel> {
+        return withContext(Dispatchers.IO){
+            val response = retrofit.create(MovieApiClient::class.java).getAllMoviesTopRated(page)
             response.body()?.results ?: emptyList()
         }
     }
