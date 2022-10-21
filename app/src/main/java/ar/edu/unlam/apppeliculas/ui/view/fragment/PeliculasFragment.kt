@@ -17,7 +17,6 @@ import ar.edu.unlam.apppeliculas.domain.adapter.MoviePopularAdapter
 import ar.edu.unlam.apppeliculas.domain.adapter.MovieTopRatedAdapter
 import ar.edu.unlam.apppeliculas.domain.adapter.MovieTrendingAdapter
 import ar.edu.unlam.apppeliculas.domain.model.MovieModel
-import ar.edu.unlam.apppeliculas.domain.usecase.GetMoviesTrending
 import ar.edu.unlam.apppeliculas.ui.viewmodel.MovieViewModel
 import com.google.gson.GsonBuilder
 
@@ -43,35 +42,41 @@ class PeliculasFragment : Fragment() {
                 initRecyclerView()
             }
         })
-
-
-
         return binding.root
     }
+
 
     private fun initRecyclerView() {
 
         val recyclerView1 = binding.rcvMoviesLoMasPopular
         val recyclerView2 = binding.rcvMoviesLoMasValorado
         val recyclerView3 = binding.rcvMoviesTrending
-
+        val listaPopularMovies : MutableList<MovieModel> = mutableListOf()
+        val listaTopRatedMovies : MutableList<MovieModel> = mutableListOf()
+        val listaTrendingMovies : MutableList<MovieModel> = mutableListOf()
 
         val layoutManagerr = GridLayoutManager(this.context, 1, GridLayoutManager.HORIZONTAL, false)
 
-    val adapterPopular = MoviePopularAdapter(MovieProvider.movies) { onItemSelected(it) }
-    recyclerView1.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            super.onScrolled(recyclerView, dx, dy)
-            movieViewModel.lastPopularVisible.value = layoutManagerr.findLastVisibleItemPosition()
-        }
-    })
-    recyclerView1.adapter=adapterPopular
-    recyclerView1.layoutManager = layoutManagerr
+        var adapterPopular =  MoviePopularAdapter(listaPopularMovies){onItemSelected(it)}
+        recyclerView1.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                movieViewModel.lastPopularVisible.value = layoutManagerr.findLastVisibleItemPosition()
+            }
+        })
+        recyclerView1.adapter=adapterPopular
+        recyclerView1.layoutManager = layoutManagerr
 
+        movieViewModel.moviesPopular.observe(viewLifecycleOwner, Observer {
+            it?.forEach {
+                if (!listaPopularMovies.contains(it)){
+                    listaPopularMovies.add(it)
+                    adapterPopular.notifyItemInserted(listaPopularMovies.size)
+                }
+            }
+        })
 
-
-
-           val adapterTopRated = MovieTopRatedAdapter(MovieProvider.moviesTopRated) { onItemSelected(it) }
+           val adapterTopRated = MovieTopRatedAdapter(listaTopRatedMovies) { onItemSelected(it) }
         val layoutManager2 = GridLayoutManager(this.context, 1, GridLayoutManager.HORIZONTAL, false)
         recyclerView2.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -82,9 +87,21 @@ class PeliculasFragment : Fragment() {
         recyclerView2.adapter=adapterTopRated
         recyclerView2.layoutManager=layoutManager2
 
+        movieViewModel.moviesTopRated.observe(viewLifecycleOwner, Observer {
+            it?.forEach {
+                if (!listaTopRatedMovies.contains(it)){
+                    listaTopRatedMovies.add(it)
+                    adapterTopRated.notifyItemInserted(listaTopRatedMovies.size)
+                }
+            }
+        })
+
+
+
+
 
        val adapterTrending =
-            MovieTrendingAdapter(MovieProvider.moviesTrending) { onItemSelected(it) }
+            MovieTrendingAdapter(listaTrendingMovies) { onItemSelected(it) }
         val layoutManager3 = GridLayoutManager(this.context, 1, GridLayoutManager.HORIZONTAL, false)
         recyclerView3.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -95,7 +112,18 @@ class PeliculasFragment : Fragment() {
         recyclerView3.adapter=adapterTrending
         recyclerView3.layoutManager=layoutManager3
 
+        movieViewModel.moviesTrending.observe(viewLifecycleOwner, Observer {
+            it?.forEach {
+                if (!listaTrendingMovies.contains(it)){
+                    listaTrendingMovies.add(it)
+                        adapterTrending.notifyItemInserted(listaTrendingMovies.size)
+                }
+            }
+        })
     }
+
+
+
 
     private fun onItemSelected(movie: MovieModel) {
         val bundle = Bundle()

@@ -14,7 +14,9 @@ import kotlinx.coroutines.launch
 class MovieViewModel() : ViewModel() {
     private var _isLoading = MutableLiveData<Boolean>()
 
-    var moviesPopular = MutableLiveData<List<MovieModel?>?>()
+    var moviesPopular = MutableLiveData<List<MovieModel>?>()
+    var moviesTopRated = MutableLiveData<List<MovieModel>?>()
+    var moviesTrending = MutableLiveData<List<MovieModel>?>()
 
     private var getMoviesUseCase = GetMovies()
     private var getMoreMoviesPopular = GetMoreMoviesPopular()
@@ -22,6 +24,8 @@ class MovieViewModel() : ViewModel() {
     private var getMoreMoviesTopRated = GetMoreMoviesTopRated()
     private var getMoviesTrending = GetMoviesTrending()
     private var getMoviesTopRated = GetMoviesTopRated()
+
+
 
 
     val isLoading: LiveData<Boolean> get() = _isLoading
@@ -35,29 +39,27 @@ class MovieViewModel() : ViewModel() {
         viewModelScope.launch {
             _isLoading.postValue(true)
             val result = getMoviesUseCase()
+            moviesPopular.postValue(result)
             val result2 = getMoviesTrending()
+            moviesTrending.postValue(result2)
             val result3 = getMoviesTopRated()
+            moviesTopRated.postValue(result3)
 
             if (!result.isNullOrEmpty() && !result2.isNullOrEmpty() && !result3.isNullOrEmpty()) {
                 _isLoading.postValue(false)
-                moviesPopular.postValue(result)
             }
         }
     }
 
     init {
         viewModelScope.launch{
-        lastTrendingVisible.collect{
-            notifyLastTrendingVisible(it)
-        }
-    }
+        lastTrendingVisible.collect{ notifyLastTrendingVisible(it) }
+      }
     }
 
     init {
         viewModelScope.launch {
-            lastPopularVisible.collect {
-                notifyLastPopularVisible(it)
-            }
+            lastPopularVisible.collect { notifyLastPopularVisible(it) }
         }
     }
 
@@ -70,22 +72,30 @@ class MovieViewModel() : ViewModel() {
     suspend fun notifyLastPopularVisible(position: Int) {
 
         viewModelScope.launch {
-            getMoreMoviesPopular(position)
-            moviesPopular.postValue(MovieProvider.movies)
+          val result = getMoreMoviesPopular(position)
+            if(!result.isNullOrEmpty()){
+                moviesPopular.postValue(result)
+            }
         }
     }
 
     suspend fun notifyLastTrendingVisible(position: Int) {
 
         viewModelScope.launch {
-            getMoreMoviesTrending(position)
+           val result = getMoreMoviesTrending(position)
+            if (!result.isNullOrEmpty()){
+                moviesTrending.postValue(result)
+            }
         }
     }
 
     suspend fun notifyLastTopRatedVisible(position: Int) {
 
         viewModelScope.launch {
-            getMoreMoviesTopRated(position)
+           val result = getMoreMoviesTopRated(position)
+            if (!result.isNullOrEmpty()){
+                moviesTopRated.postValue(result)
+            }
         }
     }
 }

@@ -2,6 +2,7 @@ package ar.edu.unlam.apppeliculas.data
 
 import ar.edu.unlam.apppeliculas.domain.model.MovieModel
 import ar.edu.unlam.apppeliculas.data.network.MovieService
+import ar.edu.unlam.apppeliculas.ui.viewmodel.MovieViewModel
 import java.text.FieldPosition
 
 class MovieRepository {
@@ -9,6 +10,7 @@ class MovieRepository {
     private var paginaPopular = 2
     private var paginaTrending = 2
     private var paginaTopRated = 2
+
 
     suspend fun getAllMovies():List<MovieModel>{
         val response:List<MovieModel> = api.getMovies()
@@ -31,7 +33,7 @@ class MovieRepository {
             val response:List<MovieModel> = api.getMoreMoviesPopular(paginaPopular)
             MovieProvider.movies += response
             paginaPopular++
-            response
+            MovieProvider.movies
         }else{
             emptyList()
         }
@@ -42,7 +44,7 @@ class MovieRepository {
             val response:List<MovieModel> = api.getMoreMoviesTrending(paginaTrending)
             MovieProvider.moviesTrending += response
             paginaTrending++
-            response
+            MovieProvider.moviesTrending
         }else{
             emptyList()
         }
@@ -53,7 +55,7 @@ class MovieRepository {
             val response:List<MovieModel> = api.getMoreMoviesTopRated(paginaTopRated)
             MovieProvider.moviesTopRated += response
             paginaTopRated++
-            response
+            MovieProvider.moviesTopRated
         }else{
             emptyList()
         }
